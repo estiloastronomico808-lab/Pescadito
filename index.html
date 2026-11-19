@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Ojo de pez</title>
+  <meta name="description" content="Cámara con efecto de lente ojo de pez en tiempo real: toma fotos y graba vídeo.">
+  <meta name="theme-color" content="#0b0d10">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Ojo de pez">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-mode="photo">
+  <main class="app">
+
+    <section class="stage">
+      <canvas id="stage" aria-label="Vista previa con efecto ojo de pez"></canvas>
+
+      <header class="top">
+        <div class="brand">
+          <svg viewBox="0 0 32 32" width="26" height="26" aria-hidden="true">
+            <circle cx="16" cy="16" r="13" fill="#161c23" stroke="#ffc857" stroke-width="2.4"/>
+            <path d="M16 5.5c-3 3.2-3 17.8 0 21M16 5.5c3 3.2 3 17.8 0 21M5.5 16c3.2 3 17.8 3 21 0M5.5 16c3.2-3 17.8-3 21 0" fill="none" stroke="#7fd3ea" stroke-width="1.2" opacity=".7"/>
+          </svg>
+          <span>Ojo de pez</span>
+        </div>
+        <div class="top-actions">
+          <button id="closeFile" class="pill" hidden type="button">Volver a la cámara</button>
+          <button id="install" class="pill accent" hidden type="button">Instalar</button>
+        </div>
+      </header>
+
+      <div id="rec" class="rec" hidden><i></i><span id="recTime">00:00</span></div>
+      <div id="flash" class="flash"></div>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+      <div id="hint" class="hint">
+        <p id="hintMsg">Activando cámara…</p>
+        <button id="hintBtn" class="btn primary" type="button" hidden>Reintentar</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div class="row slider">
+        <label for="strength">Intensidad</label>
+        <input id="strength" type="range" min="0" max="100" step="1" value="50">
+        <output id="strengthVal" for="strength">50%</output>
+      </div>
+
+      <div class="row chips" role="group" aria-label="Opciones de la lente">
+        <button class="chip" type="button" data-shape="circle" aria-pressed="true">Círculo</button>
+        <button class="chip" type="button" data-shape="full" aria-pressed="false">Cuadro completo</button>
+        <button class="chip" type="button" id="mirror" aria-pressed="false">Espejo</button>
+      </div>
+
+      <div class="controls">
+        <div class="side left">
+          <label id="fileLabel" class="icon-btn" for="file" title="Abrir foto o vídeo de la galería" aria-label="Abrir foto o vídeo de la galería">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 9"/>
+            </svg>
+          </label>
+          <input id="file" type="file" accept="image/*,video/*" hidden>
+        </div>
+
+        <button id="shutter" class="shutter" type="button" aria-label="Tomar foto"><span></span></button>
+
+        <div class="side right">
+          <button id="flip" class="icon-btn" type="button" title="Cambiar de cámara" aria-label="Cambiar de cámara">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 8V4h-4"/><path d="M20 4l-2.6 2.6A8 8 0 0 0 4.3 10"/><path d="M4 16v4h4"/><path d="M4 20l2.6-2.6a8 8 0 0 0 13.1-3.4"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="modes" role="tablist" aria-label="Modo de captura">
+        <button type="button" role="tab" data-mode="photo" aria-selected="true">Foto</button>
+        <button type="button" role="tab" data-mode="video" aria-selected="false">Vídeo</button>
+      </div>
+    </section>
+  </main>
+
+  <div id="result" class="result" hidden role="dialog" aria-modal="true" aria-label="Resultado">
+    <div class="result-card">
+      <div id="resultMedia" class="result-media"></div>
+      <div class="result-actions">
+        <button id="save" class="btn primary" type="button">Guardar en el dispositivo</button>
+        <button id="share" class="btn" type="button" hidden>Compartir…</button>
+        <button id="discard" class="btn ghost" type="button">Descartar</button>
+      </div>
+      <p id="resultNote" class="result-note"></p>
+    </div>
+  </div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
